@@ -1,0 +1,15 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}New Hotel{% endblock %}
+
+{% block body %}
+
+    <h2 style="text-align:left;">Create new Hotel</h2>
+    
+
+
+    {{ include('hotel/_form.html.twig') }}
+
+    <a href="{{ path('hotel_index') }}">back to list</a>
+  
+{% endblock %}
