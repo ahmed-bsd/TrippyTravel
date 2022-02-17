@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -18,17 +19,25 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min = 2,max = 50)
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length( min = 50)
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     maxWidth = 1300,
+     *     minHeight = 200,
+     *     maxHeight = 1300
+     * )
      */
     private $image;
 
@@ -36,6 +45,12 @@ class Article
      * @ORM\Column(type="date")
      */
     private $CreatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $id_category;
 
     public function getId(): ?int
     {
@@ -89,4 +104,17 @@ class Article
 
         return $this;
     }
+
+    public function getIdCategory(): ?Category
+    {
+        return $this->id_category;
+    }
+
+    public function setIdCategory(?Category $id_category): self
+    {
+        $this->id_category = $id_category;
+
+        return $this;
+    }
+
 }
