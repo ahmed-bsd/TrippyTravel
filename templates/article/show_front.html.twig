@@ -3,7 +3,22 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-    <div class="hero-wrap js-fullheight" style="background-image: url('front-office/images/bg_8.jpg');">
+    <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="tour.html" class="nav-link">Tour</a></li>
+            <li class="nav-item"><a href="hotel.html" class="nav-link">Hotels</a></li>
+            <li class="nav-item active"><a href="blog.html" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            <li class="nav-item cta"><a href="contact.html" class="nav-link"><span>Add listing</span></a></li>
+        </ul>
+    </div>
+    </div>
+    </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap js-fullheight" style="background-image: url('{{ asset('front-office/images/bg_4.jpg') }}');">
         <div class="overlay"></div>
         <div class="container">
             <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
@@ -16,12 +31,22 @@
     </div>
 
 
-    <div class="card mb-3">
-        <img class="card-img-top" src={{  article.image}} alt="Card image cap">
+    <section class="ftco-section ftco-degree-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ftco-animate">
+
+
+                    <h2 class="mb-3">{{ article.title }}</h2>
+                    {% for image in article.images %}
+                    <div>
+                        <img class="card-img-top" src="{{ asset('/uploads/images/blog/'~image.name) }}" alt="" >
+                     {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+                      </div>
+                     {% endfor %}
         <div class="card-body">
-            <h5 class="card-title">{{ article.title }}</h5>
-            <p class="card-text">{{ article.content }}</p>
-            <p class="card-text"><small class="text-muted">{{ article.CreatedAt ? article.CreatedAt|date('Y-m-d') : '' }}</small></p>
+
+            <pre>{{ article.content }}</pre>
         </div>
     </div>
                 <div class="col-md-4 sidebar ftco-animate">
@@ -50,38 +75,4 @@
         </div>
     </section> <!-- .section -->
 
-
-<!--
-    <h1>Article</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ article.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ article.content }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ article.image }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ article.CreatedAt ? article.CreatedAt|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('article_index') }}">back to list</a>
-
-    <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
-
-    {{ include('article/_delete_form.html.twig') }}-->
 {% endblock %}

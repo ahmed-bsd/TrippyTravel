@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @UniqueEntity("name")
  */
 class Category
 {
@@ -21,11 +24,17 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=50)
+     * * @Assert\Length(
+     *     min = 3,
+     *     max = 50,
+     *     minMessage = "The name is too short ( minimum 3 caracters) ",
+     *     maxMessage = "The name is too long ( max 50 caracters) ",
+     * )
      */
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="id_category")
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="id_category",cascade={"remove"})
      */
     private $articles;
 

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('back-office/css/vertical-layout-light/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('back-office/images/favicon.png') }}" />
+
 </head>
 <body>
 <div class="container-scroller">
@@ -197,6 +198,7 @@
             </button>
         </div>
     </nav>
+    {{ flasher_render() }}
     <div class="container-fluid page-body-wrapper">
         <div class="theme-setting-wrapper">
             <div id="settings-trigger"><i class="ti-settings"></i></div>
@@ -410,7 +412,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('admin-dashboard/users') }}" class="nav-link" >
+                    <a href="" class="nav-link" >
                         <i class="menu-icon mdi mdi-floor-plan"></i>
                         <span class="menu-title">Utilisateurs</span>
                         <i class="menu-arrow"></i>

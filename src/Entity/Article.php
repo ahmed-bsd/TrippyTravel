@@ -3,11 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @UniqueEntity("title")
  */
 class Article
 {
@@ -20,29 +25,22 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Length(min = 2,max = 50)
+     * @Assert\NotBlank(message="The title is required !")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length( min = 50)
+     * @Assert\Length(
+     *      min = 50,
+     *      minMessage = "Your content is too short: {{ limit }} caraters needed ",
+     *     )
      */
+
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Image(
-     *     minWidth = 200,
-     *     maxWidth = 1300,
-     *     minHeight = 200,
-     *     maxHeight = 1300
-     * )
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $CreatedAt;
 
@@ -51,6 +49,18 @@ class Article
      * @ORM\JoinColumn(nullable=false)
      */
     private $id_category;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Articlimages::class, mappedBy="article",cascade={"persist", "remove"})
+     */
+    private $images;
+
+
+    public function __construct() {
+        $this->CreatedAt = new \DateTimeImmutable();
+        $this->images = new ArrayCollection();
+
+        }
 
     public function getId(): ?int
     {
@@ -81,17 +91,9 @@ class Article
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
 
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
 
-        return $this;
-    }
+
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -113,6 +115,36 @@ class Article
     public function setIdCategory(?Category $id_category): self
     {
         $this->id_category = $id_category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Articlimages[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Articlimages $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Articlimages $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getArticle() === $this) {
+                $image->setArticle(null);
+            }
+        }
 
         return $this;
     }

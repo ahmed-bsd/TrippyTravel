@@ -6,6 +6,10 @@ use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class ArticleType extends AbstractType
 {
@@ -14,9 +18,15 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('image')
-            ->add('CreatedAt')
             ->add('id_category')
+            // On ajoute le champ "images" dans le formulaire
+            // Il n'est pas lié à la base de données (mapped à false)
+            ->add('images', FileType::class,[
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
+            ])
         ;
     }
 
@@ -26,4 +36,6 @@ class ArticleType extends AbstractType
             'data_class' => Article::class,
         ]);
     }
+
+
 }
