@@ -152,7 +152,8 @@ class ArticleController extends AbstractController
     /**
      * @Route("admin-dashboard/image/{id}/delete", name="delete_image", methods={"DELETE"})
      */
-    public function deleteImage(Articlimages $image, Request $request,NotyfFactory $flasher){
+    public function deleteImage(Articlimages $image, Request $request,NotyfFactory $flasher)
+    {
         $data = json_decode($request->getContent(), true);
 
         // On vérifie si le token est valide
@@ -187,8 +188,11 @@ class ArticleController extends AbstractController
     /**
      * @Route("/article/{id}", name="article_show_client", methods={"GET"})
      */
-    public function show_client(Article $article): Response
+    public function show_client(Article $article, EntityManagerInterface $entityManager): Response
     {
+        $article->setViews($article->getViews()+1);
+        $entityManager->persist($article);
+        $entityManager->flush();
         return $this->render('article/show_front.html.twig', [
             'article' => $article,
         ]);

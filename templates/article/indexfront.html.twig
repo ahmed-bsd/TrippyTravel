@@ -29,11 +29,13 @@
                             <div class="text p-4 d-block">
 
                                 <span class="tag">{{ article.getIdCategory() }}</span>
+                                <span ><a href="{{ path('article_show_client',{id: article.id}) }}" class="meta-chat"><span class="icon-eye"></span> {{ article.views }}</a></span>
 
                                 <h3 class="heading mt-3"><a href="{{ path('article_show_client',{id: article.id}) }}">{{ article.title }}</a></h3>
                                 <div class="meta mb-3">
                                     <div><a href="{{ path('article_show_client',{id: article.id}) }}">{{ article.CreatedAt ? article.CreatedAt|date('Y-m-d') : '' }}</a></div>
                                     <div><a href="{{ path('article_show_client',{id: article.id}) }}">Admin</a></div>
+
                                     <div><a href="{{ path('article_show_client',{id: article.id}) }}" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                                 </div>
                             </div>
