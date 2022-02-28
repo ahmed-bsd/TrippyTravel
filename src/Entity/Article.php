@@ -55,10 +55,16 @@ class Article
      */
     private $images;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $views;
+
 
     public function __construct() {
         $this->CreatedAt = new \DateTimeImmutable();
         $this->images = new ArrayCollection();
+        $this->views = 0;
 
         }
 
@@ -145,6 +151,18 @@ class Article
                 $image->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): self
+    {
+        $this->views = $views;
 
         return $this;
     }
