@@ -38,5 +38,5 @@ security:
   access_control:
     - { path: ^/efconnect }
     - { path: ^/elfinder }
-      - { path: ^/admin-dashboard, roles: ROLE_ADMIN }
-      - { path: ^/trippy, roles: ROLE_CLIENT }
+    - { path: ^/admin-dashboard, roles: ROLE_ADMIN }
+    - { path: ^/trippy, roles: ROLE_CLIENT }
