@@ -1,0 +1,33 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}New TypeRec{% endblock %}
+
+{% block body %}
+<div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="card-title">More reclamations type</h4>
+                                </div>
+                                <div class="col-md-6 text-right" align="right">
+                                        <a class="btn btn-secondary" href="{{ path('type_rec_index') }}"><i
+                                                    class="mdi mdi-keyboard-backspace"></i></a>
+                                </div>
+                                <p class="card-description"> Add reclamation type</p>
+                            </div>
+
+                            <div class="table-responsive pt-3">
+                                {{ include('type_rec/_form.html.twig') }}
+
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+{% endblock %}

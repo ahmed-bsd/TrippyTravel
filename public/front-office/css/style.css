@@ -9344,6 +9344,7 @@ textarea.form-control {
 .img-logo{
   max-height: 150px;
 }
+
 .center_div{
   display: flex;
   justify-content: center;
@@ -9367,3 +9368,14 @@ textarea.form-control {
   margin: 3px;
   border-radius: 50%!important;
 }
+
+.white  {
+  color: white;
+}
+
+a img{
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
