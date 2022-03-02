@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+
+{% block body %}
+
+<div class="hero-wrap js-fullheight" style="background-image: url('{{asset('front-office/images/bg_2.jpg')}}');">
+    <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+            <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">{{app.user}}</a></span> </p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Reclamtion</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+		<section class="ftco-section contact-section ftco-degree-bg">
+      <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+          <div class="col-md-6">
+            <h2 class="h4">Send Reclamation</h2>
+            <p class="card-description">Your problem</p>
+          </div>
+          <div class="col-md-6" align="right">
+              <a class="btn btn-info" href="{{ path('reclamation_index_client') }}"><i
+                  class="mdi mdi-format-list-bulleted-square"></i></a>
+                  </div>
+        </div>
+        
+
+            {{ include('reclamation/_form.html.twig') }}    </div>  
+    </section>            
+</div>  
+
+{% endblock %}
