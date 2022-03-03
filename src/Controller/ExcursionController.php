@@ -18,10 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 
 
 class ExcursionController extends AbstractController
@@ -29,13 +32,13 @@ class ExcursionController extends AbstractController
     /**
      * @Route("admin-dashboard/excursion/", name="excursion_index", methods={"GET","POST"})
      */
-    public function index(Request $request, ExcursionRepository $excursionRepository,ToastrFactory $flasher): Response
+    public function index(Request $request, ExcursionRepository $excursionRepository, ToastrFactory $flasher): Response
     {
         $excursions = $excursionRepository->findAll();
         $form = $this->createFormBuilder(null)
-            ->add('query', TextType::class,[
+            ->add('query', TextType::class, [
                 'required' => false,
-                'label'=>false
+                'label' => false
             ])
             ->add('chercher', SubmitType::class, [
                 'attr' => [
@@ -49,7 +52,7 @@ class ExcursionController extends AbstractController
             $re = $request->get('form');
             $excursions = $excursionRepository->createQueryBuilder('e')
                 ->where('e.libelle LIKE :lib')
-                ->setParameter('lib','%'.$re['query'].'%')
+                ->setParameter('lib', '%' . $re['query'] . '%')
                 ->getQuery()
                 ->getResult();
         }
@@ -63,7 +66,7 @@ class ExcursionController extends AbstractController
     /**
      * @Route("admin-dashboard/excursion/new", name="excursion_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $excursion = new Excursion();
         $form = $this->createForm(ExcursionType::class, $excursion);
@@ -71,9 +74,9 @@ class ExcursionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $productImages = $excursion->getExcursionimages();
-            foreach($productImages as $key => $productImage){
+            foreach ($productImages as $key => $productImage) {
                 $productImage->setExcursion($excursion);
-                $productImages->set($key,$productImage);
+                $productImages->set($key, $productImage);
             }
             $entityManager->persist($excursion);
             $entityManager->flush();
@@ -95,7 +98,7 @@ class ExcursionController extends AbstractController
     {
         $arr_img = [];
         $images = $excursion->getExcursionimages();
-        foreach ($images as $item){
+        foreach ($images as $item) {
             $arr_img[] = $item->getImageName();
         }
         return $this->render('excursion/show.html.twig', [
@@ -108,15 +111,15 @@ class ExcursionController extends AbstractController
     /**
      * @Route("admin-dashboard/excursion/{id}/edit", name="excursion_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Excursion $excursion, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
+    public function edit(Request $request, Excursion $excursion, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(ExcursionType::class, $excursion);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $productImages = $excursion->getExcursionimages();
-            foreach($productImages as $key => $productImage){
+            foreach ($productImages as $key => $productImage) {
                 $productImage->setExcursion($excursion);
-                $productImages->set($key,$productImage);
+                $productImages->set($key, $productImage);
             }
             $entityManager->flush();
             $flasher->addSuccess('Modifié avec succés!');
@@ -132,9 +135,9 @@ class ExcursionController extends AbstractController
     /**
      * @Route("admin-dashboard/excursion/{id}", name="excursion_delete", methods={"POST"})
      */
-    public function delete(Request $request, Excursion $excursion, EntityManagerInterface $entityManager,SweetAlertFactory $flasher): Response
+    public function delete(Request $request, Excursion $excursion, EntityManagerInterface $entityManager, SweetAlertFactory $flasher): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$excursion->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $excursion->getId(), $request->request->get('_token'))) {
             $entityManager->remove($excursion);
             $entityManager->flush();
             $flasher->addSuccess('Supprimé avec succès');
@@ -146,11 +149,11 @@ class ExcursionController extends AbstractController
     /**
      * @Route("excursion/", name="excursion_index_front", methods={"GET"})
      */
-    public function index_front(ExcursionRepository $excursionRepository,Request $request, PaginatorInterface $paginator): Response
+    public function index_front(ExcursionRepository $excursionRepository, Request $request, PaginatorInterface $paginator): Response
     {
-            $excursions = $paginator->paginate(
-                $excursionRepository->findAll(), // Requête contenant les données à paginer (ici nos articles)
-                $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+        $excursions = $paginator->paginate(
+            $excursionRepository->findAll(), // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             10 // Nombre de résultats par page
         );
         return $this->render('excursion/front_index.html.twig', [
@@ -161,7 +164,7 @@ class ExcursionController extends AbstractController
     /**
      * @Route("excursion/{id}", name="excursion_show_front", methods={"GET","POST"})
      */
-    public function show_front(EntityManagerInterface $entityManager, Excursion $excursion,Request $request,FlasherInterface $flasher): Response
+    public function show_front(EntityManagerInterface $entityManager, Excursion $excursion, Request $request, FlasherInterface $flasher): Response
     {
         $excursionreservation = new Excursionreservation();
         $form = $this->createFormBuilder(null)
@@ -177,11 +180,54 @@ class ExcursionController extends AbstractController
             $excursion->addExcursionreservation($excursionreservation);
             $entityManager->flush();
             $flasher->addSuccess('Réservé avec succés!');
-            return $this->redirectToRoute('excursion_index_front', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('excursion/show_front.html.twig', [
             'excursion' => $excursion,
             'form' => $form->createView(),
         ]);
+    }
+
+
+    /**
+     * @Route("/admin-dashboard/excursionsearch", name="ajax_search", methods={"POST"})
+     */
+    public function searchAction(Request $request, ExcursionRepository $excursionRepository)
+//    public function searchAction()
+    {
+        $requestString = $request->get('q');
+        if ($request){
+            $excursions = $excursionRepository->findEntitiesByString($requestString);
+            if (!$excursions) {
+                $result['excursions']['error'] = "Excursion Pas trouvé :( ";
+            } else {
+                $result['excursions'] = $this->getRealEntities($excursions,"");
+            }
+        }else{
+            $result['excursions'] = $excursionRepository->findAll();
+        }
+        return new Response(json_encode($result));
+
+        if ($request->isXMLHttpRequest()) {
+            return new JsonResponse(array('data' => 'this is a json response'));
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
+
+    public function getRealEntities($excursions)
+    {
+        $token = "";
+        foreach ($excursions as $excursions) {
+//            $token = $this->tokenManager->getToken('_csrf/delete'.$excursions->getId())->getValue();
+            $realEntities[$excursions->getId()] = [$excursions->getId(), $excursions->getLibelle(),$excursions->getExcursioncategorie()->getLibelle(),$excursions->getPrix(),$token];
+        }
+        return $realEntities;
+    }
+
+    public function __construct(
+        CsrfTokenManagerInterface $tokenManager
+    ) {
+        $this->tokenManager = $tokenManager;
     }
 }

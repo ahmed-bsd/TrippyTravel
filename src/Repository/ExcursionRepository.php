@@ -18,6 +18,21 @@ class ExcursionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Excursion::class);
     }
+    public function findEntitiesByString($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p
+                FROM App\Entity\Excursion p
+                WHERE p.libelle LIKE :str'
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+//        return $this->getEntityManager()->createQueryBuilder('e')
+//            ->where('e.libelle LIKE :lib')
+//            ->setParameter('lib', '%' . $str . '%')
+//            ->getQuery()
+//            ->getResult();
+    }
 
     // /**
     //  * @return Excursion[] Returns an array of Excursion objects
