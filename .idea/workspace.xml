@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a569a2b-c32a-4ba6-92ca-c199b02e641f" name="Changes" comment="">
+    <list default="true" id="521eb123-88ad-4c23-9d12-f0a9740c2a20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/front-office/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/front-office/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionpaiementController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionpaiementController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Excursionreservation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Excursionreservation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ExcursionreservationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ExcursionreservationType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/excursionpaiement/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursionpaiement/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/excursionpaiement/success.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursionpaiement/success.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -51,6 +50,7 @@
       <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
       <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
       <path value="$PROJECT_DIR$/vendor/nelmio/cors-bundle" />
+      <path value="$PROJECT_DIR$/vendor/stripe/stripe-php" />
       <path value="$PROJECT_DIR$/vendor/sebastian/cli-parser" />
       <path value="$PROJECT_DIR$/vendor/sebastian/code-unit" />
       <path value="$PROJECT_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
@@ -184,10 +184,9 @@
       <path value="$PROJECT_DIR$/vendor/symfony/web-server-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
-      <path value="$PROJECT_DIR$/vendor/stripe/stripe-php" />
     </include_path>
   </component>
-  <component name="ProjectId" id="25px6vmEqxhVF82LtZj0oh83ZZt" />
+  <component name="ProjectId" id="25uiOcuklk422dHRvD0OiRmDfJI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="false" />
@@ -210,28 +209,16 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0a569a2b-c32a-4ba6-92ca-c199b02e641f" name="Changes" comment="" />
-      <created>1646237659699</created>
+      <changelist id="521eb123-88ad-4c23-9d12-f0a9740c2a20" name="Changes" comment="" />
+      <created>1646383353244</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1646237659699</updated>
-      <workItem from="1646237661096" duration="920000" />
-      <workItem from="1646238925541" duration="28685000" />
+      <updated>1646383353244</updated>
+      <workItem from="1646383354666" duration="4161000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

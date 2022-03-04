@@ -168,7 +168,7 @@ class ExcursionreservationController extends AbstractController
         $reservation = $repository->find($reservation_info->getId());
         $reservation->setStatus($status);
         $entityManager->flush();
-        $flasher->addSuccess('Ajouté avec succés!');
+        $flasher->addSuccess('Paiement effectué avec succés!');
         return $this->render('excursionpaiement/success.html.twig', [
             'controller_name' => 'ExcursionpaiementController',
         ]);
