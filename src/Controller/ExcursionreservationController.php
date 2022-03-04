@@ -13,13 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/excursionreservation")
- */
+
 class ExcursionreservationController extends AbstractController
 {
     /**
-     * @Route("/", name="excursionreservation_index", methods={"GET"})
+     * @Route("/excursionreservation/", name="excursionreservation_index", methods={"GET"})
      */
     public function index(ExcursionreservationRepository $excursionreservationRepository): Response
     {
@@ -29,7 +27,7 @@ class ExcursionreservationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="excursionreservation_new", methods={"GET", "POST"})
+     * @Route("/excursionreservation/new", name="excursionreservation_new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
     {
@@ -51,7 +49,7 @@ class ExcursionreservationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="excursionreservation_show", methods={"GET"})
+     * @Route("/excursionreservation/{id}", name="excursionreservation_show", methods={"GET"})
      */
     public function show(Excursionreservation $excursionreservation): Response
     {
@@ -61,7 +59,7 @@ class ExcursionreservationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="excursionreservation_edit", methods={"GET", "POST"})
+     * @Route("/excursionreservation/{id}/edit", name="excursionreservation_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
     {
@@ -81,7 +79,7 @@ class ExcursionreservationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="excursionreservation_delete", methods={"POST"})
+     * @Route("/excursionreservation/{id}", name="excursionreservation_delete", methods={"POST"})
      */
     public function delete(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager,SweetAlertFactory $flasher): Response
     {
@@ -92,5 +90,26 @@ class ExcursionreservationController extends AbstractController
         }
 
         return $this->redirectToRoute('excursionreservation_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/admin-dashboard/excursioncalendar", name="excursion_calendar", methods={"GET"})
+     */
+    public function calendar(Request $request, ExcursionreservationRepository $repository){
+        $events = $repository->findAll();
+
+        $rdvs = [];
+
+        foreach($events as $event){
+            $rdvs[] = [
+                'id' => $event->getId(),
+                'start' => $event->getStart()->format('Y-m-d'),
+                'end' => $event->getEnd()->format('Y-m-d'),
+                'title' => $event->getStatus(),
+            ];
+        }
+
+        $data = json_encode($rdvs);
+
+        return $this->render('excursionreservation/calendar.html.twig', compact('data'));
     }
 }
