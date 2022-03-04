@@ -4,9 +4,11 @@
     <list default="true" id="0a569a2b-c32a-4ba6-92ca-c199b02e641f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionpaiementController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionpaiementController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Excursionreservation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Excursionreservation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/baseBO.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/baseBO.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ExcursionreservationType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ExcursionreservationType.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +216,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646237659699</updated>
       <workItem from="1646237661096" duration="920000" />
-      <workItem from="1646238925541" duration="25303000" />
+      <workItem from="1646238925541" duration="28685000" />
     </task>
     <servers />
   </component>

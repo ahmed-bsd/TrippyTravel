@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Session;
 
 
 class ExcursionreservationController extends AbstractController
@@ -111,5 +113,73 @@ class ExcursionreservationController extends AbstractController
         $data = json_encode($rdvs);
 
         return $this->render('excursionreservation/calendar.html.twig', compact('data'));
+    }
+
+    /**
+     * @Route("/checkoutexcursion", name="checkoutexcursion")
+     */
+    public function checkoutexcursion($stripeSK,ExcursionreservationRepository $repository): Response
+    {
+        $session_res  = $this->get("session");
+        $reservation_info = $session_res->get("excursionreservation");
+        \Stripe\Stripe::setApiKey($stripeSK);
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $reservation_info->getExcursion()->getLibelle(),
+                    ],
+                    'unit_amount' => ($reservation_info->getPrix())*100,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('success_url',[],UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('cancel_url',[],UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $payment_intent = ($session->payment_intent);
+        $reservation = $repository->find($reservation_info->getId());
+        $reservation->setPi($payment_intent);
+        $entityManager->flush();
+
+        return $this->redirect($session->url,303);
+    }
+    /**
+     * @Route("/success_url", name="success_url")
+     */
+    public function success_url($stripeSK,FlasherInterface $flasher,ExcursionreservationRepository $repository): Response
+    {
+        $session_res  = $this->get("session");
+        $reservation_info = $session_res->get("excursionreservation");
+        $reservation_detail = $repository->find($reservation_info->getId());
+        $pi = $reservation_detail->getPi();
+        $stripe = new \Stripe\StripeClient(
+            $stripeSK
+        );
+        $info = $stripe->paymentIntents->retrieve(
+            $pi,
+            []
+        );
+        $status = $info->status;
+        $entityManager = $this->getDoctrine()->getManager();
+        $reservation = $repository->find($reservation_info->getId());
+        $reservation->setStatus($status);
+        $entityManager->flush();
+        $flasher->addSuccess('Ajouté avec succés!');
+        return $this->render('excursionpaiement/success.html.twig', [
+            'controller_name' => 'ExcursionpaiementController',
+        ]);
+    }
+    /**
+     * @Route("/cancel_url", name="cancel_url")
+     */
+    public function cancel_url(): Response
+    {
+        return $this->render('excursionpaiement/cancel.html.twig', [
+            'controller_name' => 'ExcursionpaiementController',
+        ]);
     }
 }

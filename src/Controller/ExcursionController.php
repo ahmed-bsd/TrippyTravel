@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
+use Symfony\Component\HttpFoundation\Session;
 
 
 class ExcursionController extends AbstractController
@@ -81,6 +82,8 @@ class ExcursionController extends AbstractController
             }
             $entityManager->persist($excursion);
             $entityManager->flush();
+
+
             $flasher->addSuccess('Ajouté avec succés!');
             return $this->redirectToRoute('excursion_index', [], Response::HTTP_SEE_OTHER);
 //            $flasher->addSuccess('Data has been saved successfully!');
@@ -178,8 +181,11 @@ class ExcursionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $excursionreservation->setPrix($excursion->getPrix());
+            $excursionreservation->setUser($this->getUser());
             $excursion->addExcursionreservation($excursionreservation);
             $entityManager->flush();
+            $session  = $this->get("session");
+            $session->set("excursionreservation",$excursionreservation);
             $flasher->addSuccess('Réservé avec succés!');
             return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
         }

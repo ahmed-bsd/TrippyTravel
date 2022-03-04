@@ -106,6 +106,11 @@ class User implements UserInterface
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Excursionreservation::class, mappedBy="user")
+     */
+    private $excursionreservations;
     
 
     public function __construct()
@@ -113,6 +118,7 @@ class User implements UserInterface
         $this->reclamations = new ArrayCollection();
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
+        $this->excursionreservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -297,6 +303,36 @@ class User implements UserInterface
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Excursionreservation>
+     */
+    public function getExcursionreservations(): Collection
+    {
+        return $this->excursionreservations;
+    }
+
+    public function addExcursionreservation(Excursionreservation $excursionreservation): self
+    {
+        if (!$this->excursionreservations->contains($excursionreservation)) {
+            $this->excursionreservations[] = $excursionreservation;
+            $excursionreservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExcursionreservation(Excursionreservation $excursionreservation): self
+    {
+        if ($this->excursionreservations->removeElement($excursionreservation)) {
+            // set the owning side to null (unless already changed)
+            if ($excursionreservation->getUser() === $this) {
+                $excursionreservation->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -13,6 +13,8 @@ class Excursionreservation
 {
     public function __construct() {
         $this->setCreatedAt(new \DateTime());
+        $this->setStart(new \DateTime());
+        $this->setEnd(new \DateTime());
     }
     const RESERVATION_EXCURSION_DEFAULT = "reservation.non_paye";
     /**
@@ -56,6 +58,17 @@ class Excursionreservation
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $end;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="excursionreservations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pi;
 
 
 
@@ -131,6 +144,30 @@ class Excursionreservation
     public function setEnd(\DateTimeInterface $end): self
     {
         $this->end = $end;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPi(): ?string
+    {
+        return $this->pi;
+    }
+
+    public function setPi(?string $pi): self
+    {
+        $this->pi = $pi;
 
         return $this;
     }
