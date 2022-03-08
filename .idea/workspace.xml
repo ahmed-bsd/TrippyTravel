@@ -3,18 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="521eb123-88ad-4c23-9d12-f0a9740c2a20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/front-office/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/front-office/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/excursionpaiement/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursionpaiement/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/excursionpaiement/success.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursionpaiement/success.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -184,6 +183,10 @@
       <path value="$PROJECT_DIR$/vendor/symfony/web-server-bundle" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-svg-lib" />
+      <path value="$PROJECT_DIR$/vendor/phenx/php-font-lib" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
     </include_path>
   </component>
   <component name="ProjectId" id="25uiOcuklk422dHRvD0OiRmDfJI" />
@@ -214,11 +217,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1646383353244</updated>
-      <workItem from="1646383354666" duration="4161000" />
+      <workItem from="1646383354666" duration="5038000" />
+      <workItem from="1646757796526" duration="11884000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -9,6 +9,7 @@ use App\Form\ExcursionimageType;
 use App\Form\ExcursionType;
 use App\Repository\ExcursionRepository;
 use App\Repository\ExcursionreservationRepository;
+use App\Service\DompdfGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Flasher\Prime\FlasherInterface;
 use Flasher\SweetAlert\Prime\SweetAlertFactory;
@@ -169,7 +170,7 @@ class ExcursionController extends AbstractController
     /**
      * @Route("excursion/{id}", name="excursion_show_front", methods={"GET","POST"})
      */
-    public function show_front(EntityManagerInterface $entityManager, Excursion $excursion, Request $request, FlasherInterface $flasher): Response
+    public function show_front(DompdfController $Dompdf, EntityManagerInterface $entityManager, Excursion $excursion, Request $request, FlasherInterface $flasher): Response
     {
         $excursionreservation = new Excursionreservation();
         $form = $this->createFormBuilder(null)
@@ -181,14 +182,20 @@ class ExcursionController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $excursionreservation->setPrix($excursion->getPrix());
-            $excursionreservation->setUser($this->getUser());
-            $excursion->addExcursionreservation($excursionreservation);
-            $entityManager->flush();
-            $session  = $this->get("session");
-            $session->set("excursionreservation",$excursionreservation);
-            $flasher->addSuccess('Réservé avec succés!');
-            return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
+            $user_connected = $this->getUser();
+            if ($user_connected){
+                $excursionreservation->setPrix($excursion->getPrix());
+                $excursionreservation->setUser($this->getUser());
+                $excursion->addExcursionreservation($excursionreservation);
+                $entityManager->flush();
+                $session  = $this->get("session");
+                $session->set("excursionreservation",$excursionreservation);
+                $flasher->addSuccess('Réservé avec succés!');
+                $Dompdf->generate_view($excursionreservation);
+                return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $flasher->addError("Vous devez être connecté");
+            }
         }
         return $this->render('excursion/show_front.html.twig', [
             'excursion' => $excursion,
