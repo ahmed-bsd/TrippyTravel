@@ -17,6 +17,7 @@ class Excursionreservation
         $this->setEnd(new \DateTime());
     }
     const RESERVATION_EXCURSION_DEFAULT = "reservation.non_paye";
+    const RESERVATION_EXCURSION_SUCCESS = "succeeded";
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

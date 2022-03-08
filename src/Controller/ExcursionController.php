@@ -9,13 +9,13 @@ use App\Form\ExcursionimageType;
 use App\Form\ExcursionType;
 use App\Repository\ExcursionRepository;
 use App\Repository\ExcursionreservationRepository;
-use App\Service\DompdfGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Flasher\Prime\FlasherInterface;
 use Flasher\SweetAlert\Prime\SweetAlertFactory;
 use Flasher\Toastr\Prime\ToastrFactory;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,15 +24,25 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Mailer\MailerInterface;
 
 
 class ExcursionController extends AbstractController
 {
+    private $mailer;
+
+    public function __construct( MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("admin-dashboard/excursion/", name="excursion_index", methods={"GET","POST"})
      */
@@ -191,7 +201,22 @@ class ExcursionController extends AbstractController
                 $session  = $this->get("session");
                 $session->set("excursionreservation",$excursionreservation);
                 $flasher->addSuccess('Réservé avec succés!');
-                $Dompdf->generate_view($excursionreservation);
+                $lib_file = 'Reservation.pdf';
+                $Dompdf->generate_store($excursionreservation,$lib_file);
+                //send email
+                try {
+                    $email = new TemplatedEmail();
+                    $email->subject("Notification réservation");
+                    $email->from('amani.boussaa@esprit.tn');
+                    $email->to($user_connected->getEmail());
+                    $email->htmlTemplate('excursionreservation/confirmation_email.html.twig');
+                    $email->context(['username' => $user_connected->getFirstname()." ".$user_connected->getLastname()]);
+                    $email->attachFromPath($lib_file);
+                    $this->mailer->send($email);
+                    $flasher->addSuccess("Email envoyé, Verifier votre boite email svp");
+                } catch (TransportExceptionInterface $e) {
+                    $flasher->addError("Email non envoyé. ");
+                }
                 return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
             }else{
                 $flasher->addError("Vous devez être connecté");

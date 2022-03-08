@@ -6,11 +6,16 @@ use App\Entity\Excursionreservation;
 use App\Form\ExcursionreservationType;
 use App\Repository\ExcursionreservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Flasher\Prime\FlasherInterface;
 use Flasher\SweetAlert\Prime\SweetAlertFactory;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Session;
@@ -18,6 +23,12 @@ use Symfony\Component\HttpFoundation\Session;
 
 class ExcursionreservationController extends AbstractController
 {
+    private $mailer;
+
+    public function __construct( MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
     /**
      * @Route("/excursionreservation/", name="excursionreservation_index", methods={"GET"})
      */
@@ -31,7 +42,7 @@ class ExcursionreservationController extends AbstractController
     /**
      * @Route("/excursionreservation/new", name="excursionreservation_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $excursionreservation = new Excursionreservation();
         $form = $this->createForm(ExcursionreservationType::class, $excursionreservation);
@@ -63,7 +74,7 @@ class ExcursionreservationController extends AbstractController
     /**
      * @Route("/excursionreservation/{id}/edit", name="excursionreservation_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager,FlasherInterface $flasher): Response
+    public function edit(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
         $form = $this->createForm(ExcursionreservationType::class, $excursionreservation);
         $form->handleRequest($request);
@@ -83,9 +94,9 @@ class ExcursionreservationController extends AbstractController
     /**
      * @Route("/excursionreservation/{id}", name="excursionreservation_delete", methods={"POST"})
      */
-    public function delete(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager,SweetAlertFactory $flasher): Response
+    public function delete(Request $request, Excursionreservation $excursionreservation, EntityManagerInterface $entityManager, SweetAlertFactory $flasher): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$excursionreservation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $excursionreservation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($excursionreservation);
             $entityManager->flush();
             $flasher->addSuccess('Supprimé avec succès');
@@ -93,15 +104,17 @@ class ExcursionreservationController extends AbstractController
 
         return $this->redirectToRoute('excursionreservation_index', [], Response::HTTP_SEE_OTHER);
     }
+
     /**
      * @Route("/admin-dashboard/excursioncalendar", name="excursion_calendar", methods={"GET"})
      */
-    public function calendar(Request $request, ExcursionreservationRepository $repository){
+    public function calendar(Request $request, ExcursionreservationRepository $repository)
+    {
         $events = $repository->findAll();
 
         $rdvs = [];
 
-        foreach($events as $event){
+        foreach ($events as $event) {
             $rdvs[] = [
                 'id' => $event->getId(),
                 'start' => $event->getStart()->format('Y-m-d'),
@@ -118,9 +131,9 @@ class ExcursionreservationController extends AbstractController
     /**
      * @Route("/checkoutexcursion", name="checkoutexcursion")
      */
-    public function checkoutexcursion($stripeSK,ExcursionreservationRepository $repository): Response
+    public function checkoutexcursion($stripeSK, ExcursionreservationRepository $repository): Response
     {
-        $session_res  = $this->get("session");
+        $session_res = $this->get("session");
         $reservation_info = $session_res->get("excursionreservation");
         \Stripe\Stripe::setApiKey($stripeSK);
 
@@ -131,13 +144,13 @@ class ExcursionreservationController extends AbstractController
                     'product_data' => [
                         'name' => $reservation_info->getExcursion()->getLibelle(),
                     ],
-                    'unit_amount' => ($reservation_info->getPrix())*100,
+                    'unit_amount' => ($reservation_info->getPrix()) * 100,
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => $this->generateUrl('success_url',[],UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('cancel_url',[],UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $this->generateUrl('success_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('cancel_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
         $entityManager = $this->getDoctrine()->getManager();
         $payment_intent = ($session->payment_intent);
@@ -145,14 +158,15 @@ class ExcursionreservationController extends AbstractController
         $reservation->setPi($payment_intent);
         $entityManager->flush();
 
-        return $this->redirect($session->url,303);
+        return $this->redirect($session->url, 303);
     }
+
     /**
      * @Route("/success_url", name="success_url")
      */
-    public function success_url($stripeSK,FlasherInterface $flasher,ExcursionreservationRepository $repository): Response
+    public function success_url($stripeSK, FlasherInterface $flasher, ExcursionreservationRepository $repository,DompdfController $Dompdf): Response
     {
-        $session_res  = $this->get("session");
+        $session_res = $this->get("session");
         $reservation_info = $session_res->get("excursionreservation");
         $reservation_detail = $repository->find($reservation_info->getId());
         $pi = $reservation_detail->getPi();
@@ -163,16 +177,40 @@ class ExcursionreservationController extends AbstractController
             $pi,
             []
         );
+        $recu_url = $info->charges->data[0]->receipt_url;
+
         $status = $info->status;
         $entityManager = $this->getDoctrine()->getManager();
         $reservation = $repository->find($reservation_info->getId());
         $reservation->setStatus($status);
         $entityManager->flush();
+        if ($status == Excursionreservation::RESERVATION_EXCURSION_SUCCESS) {
+            $user_connected = $this->getUser();
+            if ($user_connected) {
+                $lib_file = "Paiement.pdf";
+                $Dompdf->generate_store($reservation_info,$lib_file);
+                //send email
+                try {
+                    $email = new TemplatedEmail();
+                    $email->subject("Notification paiement");
+                    $email->from('amani.boussaa@esprit.tn');
+                    $email->to($user_connected->getEmail());
+                    $email->htmlTemplate('excursionpaiement/confirmation_email.html.twig');
+                    $email->context(['recu_url'=>$recu_url,'username' => $user_connected->getFirstname() . " " . $user_connected->getLastname()]);
+                    $email->attachFromPath($lib_file);
+                    $this->mailer->send($email);
+                    $flasher->addSuccess("Email envoyé, Verifier votre boite email svp");
+                } catch (TransportExceptionInterface $e) {
+                    $flasher->addError("Email non envoyé. ");
+                }
+            }
+        }
         $flasher->addSuccess('Paiement effectué avec succés!');
         return $this->render('excursionpaiement/success.html.twig', [
             'controller_name' => 'ExcursionpaiementController',
         ]);
     }
+
     /**
      * @Route("/cancel_url", name="cancel_url")
      */
