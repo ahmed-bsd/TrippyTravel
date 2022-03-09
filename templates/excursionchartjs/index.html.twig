@@ -10,5 +10,15 @@
 
     <div class="example-wrapper">
         {{ render_chart(chart, {'id': 'my-chart'})}}
+        <div class="row">
+           <div class="col-md-6">
+               {{ render_chart(chart2, {'id': 'my-chart2'})}}
+
+           </div>
+            <div class="col-md-6">
+                {{ render_chart(chart3, {'id': 'my-chart3'})}}
+
+            </div>
+        </div>
     </div>
 {% endblock %}
