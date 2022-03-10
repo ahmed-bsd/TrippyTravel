@@ -244,4 +244,56 @@ class ExcursionreservationController extends AbstractController
             'client_reservations' => $reservation,
         ]);
     }
+
+    /**
+     * @Route("/admin-dashboard/remplir_modal_calendar", name="remplir_modal_calendar", methods={"GET"})
+     */
+    public function remplir_modal_calendar(Request $request)
+    {
+        $id_reservation = $request->query->get("id");
+        $reservation = $this->getDoctrine()->getRepository(Excursionreservation::class)->find($id_reservation);
+        $excursion = $reservation->getExcursion();
+        $excursionlib = $excursion->getLibelle();
+        $status = $reservation->getStatus();
+        $user_exc = $reservation->getUser()->getFirstname();
+        $start = $reservation->getStart()->format('Y-m-d');
+        $color = "#249d1c";
+        $status = "payé";
+            if ($reservation->getStatus() == Excursionreservation::RESERVATION_EXCURSION_DEFAULT){
+                $color = "#ff0000";
+                $status = "non payé";
+            }
+        return new Response(
+            '<dd  class="fw-bold fs-4 statusexcursion" style="background-color: '.$color.'">'.$status.'</dd>'.
+            '<dt class="text-muted">Excursion</dt>'.
+             '<dd >'.$excursionlib.'</dd>'.
+            '<dt class="text-muted">Date</dt>'.
+            '<dd >'.$start.'</dd>'.
+            '<dt class="text-muted">Utilisateur</dt>'.
+            '<dd >'.$user_exc.'</dd>'
+        );
+//        $events = $repository->findAll();
+//
+//        $rdvs = [];
+//
+//        foreach ($events as $event) {
+//            $color = "#249d1c";
+//            $status = "payé";
+//            if ($event->getStatus() == Excursionreservation::RESERVATION_EXCURSION_DEFAULT){
+//                $color = "#ff0000";
+//                $status = "non payé";
+//            }
+//            $rdvs[] = [
+//                'id' => $event->getId(),
+//                'start' => $event->getStart()->format('Y-m-d'),
+//                'end' => $event->getEnd()->format('Y-m-d'),
+//                'title' => $status,
+//                'color' => $color
+//            ];
+//        }
+//
+//        $data = json_encode($rdvs);
+//
+//        return $this->render('excursionreservation/calendar.html.twig', compact('data'));
+    }
 }
