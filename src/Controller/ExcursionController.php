@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Excursion;
+use App\Entity\Excursioncomment;
 use App\Entity\Excursionimage;
 use App\Entity\Excursionreservation;
+use App\Form\ExcursioncommentType;
 use App\Form\ExcursionimageType;
 use App\Form\ExcursionType;
 use App\Repository\ExcursionRepository;
@@ -166,6 +168,34 @@ class ExcursionController extends AbstractController
      */
     public function show_front(DompdfController $Dompdf, EntityManagerInterface $entityManager, Excursion $excursion, Request $request, FlasherInterface $flasher): Response
     {
+        //comment
+        $commentaires = $this->getDoctrine()->getRepository(Excursioncomment::class)->findBy([
+            'excursion' => $excursion,
+            'actif' => 1
+        ],['created_at' => 'desc']);
+        $commentaire = new Excursioncomment();
+        $formcomment = $this->createForm(ExcursioncommentType::class, $commentaire);
+        $formcomment->handleRequest($request);
+        // Nous vérifions si le formulaire a été soumis et si les données sont valides
+        if ($formcomment->isSubmitted() && $formcomment->isValid()) {
+            // Hydrate notre commentaire avec l'article
+            $commentaire->setExcursion($excursion);
+
+            // Hydrate notre commentaire avec la date et l'heure courants
+            $commentaire->setCreatedAt(new \DateTime('now'));
+
+            $doctrine = $this->getDoctrine()->getManager();
+
+            // On hydrate notre instance $commentaire
+            $doctrine->persist($commentaire);
+
+            // On écrit en base de données
+            $doctrine->flush();
+            $flasher->addSuccess('Commentaire ajouté avec succés!');
+            // On redirige l'utilisateur
+            return $this->redirectToRoute('excursion_show_front', ['id' => $excursion->getId()]);
+        }
+        //reservation
         $excursionreservation = new Excursionreservation();
         $form = $this->createFormBuilder(null)
             ->add('Reserver', SubmitType::class, [
@@ -208,7 +238,10 @@ class ExcursionController extends AbstractController
         }
         return $this->render('excursion/show_front.html.twig', [
             'excursion' => $excursion,
+            'commentaires' => $commentaires,
             'form' => $form->createView(),
+            'formcomment' => $formcomment->createView(),
+
         ]);
     }
 
