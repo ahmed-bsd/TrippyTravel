@@ -227,4 +227,13 @@ class ExcursionreservationController extends AbstractController
             'controller_name' => 'ExcursionpaiementController',
         ]);
     }
+    /**
+     * @Route("/reservation_index_client/", name="reservation_index_client", methods={"GET"})
+     */
+    public function reservation_index_client(ExcursionreservationRepository $excursionreservationRepository): Response
+    {
+        return $this->render('excursionreservation/client_reservation.html.twig', [
+            'client_reservations' => $excursionreservationRepository->findAll(),
+        ]);
+    }
 }
