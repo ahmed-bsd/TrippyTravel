@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Excursion;
+use App\Entity\Excursioncategorie;
 use App\Entity\Excursioncomment;
 use App\Entity\Excursionimage;
 use App\Entity\Excursionreservation;
 use App\Form\ExcursioncommentType;
 use App\Form\ExcursionimageType;
 use App\Form\ExcursionType;
+use App\Repository\ExcursioncategorieRepository;
 use App\Repository\ExcursionRepository;
 use App\Repository\ExcursionreservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -157,9 +159,11 @@ class ExcursionController extends AbstractController
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             2 // Nombre de résultats par page
         );
+        $categories = $this->getDoctrine()->getRepository(Excursioncategorie::class)->findAll();
         return $this->render('excursion/front_index.html.twig', [
             'excursions' => $excursions,
-            'villes' => $ville
+            'villes' => $ville,
+            'categories' => $categories
         ]);
     }
 
@@ -330,5 +334,72 @@ class ExcursionController extends AbstractController
             $result['excursions'] = $this->getRealEntities($excursionRepository->findAll());
         }
         return new Response(json_encode($result));
+    }
+    /**
+     * @Route("/menushowexcursionbycategorie/{id}", name="menushowexcursionbycategorie", methods={"GET"})
+     */
+    public function menushowexcursionbycategorie(Excursioncategorie $excursioncategorie,Request $request, PaginatorInterface $paginator): Response
+    {
+        $excursion = $excursioncategorie->getExcursions();
+        $ville = [];
+        foreach ($excursion as $one){
+            $ville[] = $one->getVille();
+        }
+        $excursions = $paginator->paginate(
+            $excursion,
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            1 // Nombre de résultats par page
+        );
+        $categories = $this->getDoctrine()->getRepository(Excursioncategorie::class)->findAll();
+        return $this->render('excursion/front_index.html.twig', [
+            'excursions' => $excursions,
+            'villes' => $ville,
+            'categories' => $categories
+        ]);
+    }
+    /**
+     * @Route("/menushowexcursionbyville/{ville}", name="menushowexcursionbyville", methods={"GET"})
+     */
+    public function menushowexcursionbyville(Request $request, PaginatorInterface $paginator): Response
+    {
+//        $excursion = $excursioncategorie->getExcursions();
+//        $ville = [];
+//        foreach ($excursion as $one){
+//            $ville[] = $one->getVille();
+//        }
+//        $excursions = $paginator->paginate(
+//            $excursion,
+//            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+//            1 // Nombre de résultats par page
+//        );
+//        $categories = $this->getDoctrine()->getRepository(Excursioncategorie::class)->findAll();
+//        return $this->render('excursion/front_index.html.twig', [
+//            'excursions' => $excursions,
+//            'villes' => $ville,
+//            'categories' => $categories
+//        ]);
+
+        $ville = $request->get('ville');
+        $excursionRepository = $this->getDoctrine()->getRepository(Excursion::class);
+        $villes = [];
+        $excursions = $excursionRepository->findAll();
+        foreach ($excursions as $one){
+            $villes[] = $one->getVille();
+        }
+        if ($ville){
+            $excursions = $excursionRepository->findBy(["ville" => $ville]);;
+        }
+        $excursions = $paginator->paginate(
+            $excursions,
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            1 // Nombre de résultats par page
+        );
+        $categories = $this->getDoctrine()->getRepository(Excursioncategorie::class)->findAll();
+
+        return $this->render('excursion/front_index.html.twig', [
+            'excursions' => $excursions,
+            'villes' => $villes,
+            'categories' => $categories
+        ]);
     }
 }
