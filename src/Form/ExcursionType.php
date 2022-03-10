@@ -27,6 +27,7 @@ class ExcursionType extends AbstractType
             ->add('programme', CKEditorType::class)
             ->add('ville')
             ->add('prix')
+            ->add('localisation')
             ->add('excursioncategorie', EntityType::class,
                 [
                     'class' => Excursioncategorie::class,

@@ -97,6 +97,11 @@ class Excursion
      */
     private $excursioncomments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $localisation;
+
 
     public function __construct()
     {
@@ -287,6 +292,18 @@ class Excursion
                 $excursioncomment->setExcursion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): self
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

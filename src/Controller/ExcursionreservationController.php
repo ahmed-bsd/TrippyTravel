@@ -115,11 +115,18 @@ class ExcursionreservationController extends AbstractController
         $rdvs = [];
 
         foreach ($events as $event) {
+            $color = "#249d1c";
+            $status = "payé";
+            if ($event->getStatus() == Excursionreservation::RESERVATION_EXCURSION_DEFAULT){
+                $color = "#ff0000";
+                $status = "non payé";
+            }
             $rdvs[] = [
                 'id' => $event->getId(),
                 'start' => $event->getStart()->format('Y-m-d'),
                 'end' => $event->getEnd()->format('Y-m-d'),
-                'title' => $event->getStatus(),
+                'title' => $status,
+                'color' => $color
             ];
         }
 

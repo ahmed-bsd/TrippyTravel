@@ -174,14 +174,15 @@
 <script src="{{ asset('front-office/js/aos.js') }}"></script>
 <script src="{{ asset('front-office/js/jquery.animateNumber.min.js') }}"></script>
 <script src="{{ asset('front-office/js/bootstrap-datepicker.js') }}"></script>
-<script src="{{ asset('front-office/js/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('front-office/js/scrollax.min.js') }}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="{{ asset('front-office/js/google-map.js') }}"></script>
+
 <script src="{{ asset('front-office/js/main.js') }}"></script>
 <script src="{{ asset('front-office/js/script.js') }}"></script>
 
 {{ flasher_render() }}
 {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+{% block scripts %}{% endblock %}
 </body>
 </html>
