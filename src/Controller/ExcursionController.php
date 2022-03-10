@@ -238,7 +238,7 @@ class ExcursionController extends AbstractController
     {
         $requestString = $request->get('q');
         if ($request){
-            $excursions = $excursionRepository->findEntitiesByString($requestString);
+            $excursions = $excursionRepository->findEntitiesByLibelle($requestString);
             if (!$excursions) {
                 $result['excursions']['error'] = "Excursion Pas trouvé :( ";
             } else {
@@ -259,12 +259,59 @@ class ExcursionController extends AbstractController
     public function getRealEntities($excursions)
     {
         $token = "";
-        foreach ($excursions as $excursions) {
+        foreach ($excursions as $excursion) {
+            $img="";
+            if ($excursion->getExcursionimages()[0]){
+                $img="/uploads/images/excursion/".$excursion->getExcursionimages()[0]->getimageName();
+            }
 //            $token = $this->tokenManager->getToken('_csrf/delete'.$excursions->getId())->getValue();
-            $realEntities[$excursions->getId()] = [$excursions->getId(), $excursions->getLibelle(),$excursions->getExcursioncategorie()->getLibelle(),$excursions->getPrix(),$token];
+            $realEntities[$excursion->getId()] = [$excursion->getId(), $excursion->getLibelle(),$excursion->getExcursioncategorie()->getLibelle(),$excursion->getPrix(),$token,$img,$excursion->getDuration(),$excursion->getVille()];
         }
         return $realEntities;
     }
+
+    /**
+     * @Route("/frontrechercheE", name="frontrechercheE", methods={"POST"})
+     */
+    public function frontrecherche(Request $request, ExcursionRepository $excursionRepository)
+    {
+        $requestString = $request->get('q');
+        if ($request){
+            $excursions = $excursionRepository->findEntitiesByLibelle($requestString);
+            if (!$excursions) {
+                $result['excursions']['error'] = "Excursion Pas trouvé :( ";
+            } else {
+                $result['excursions'] = $this->getRealEntities($excursions,"");
+            }
+        }else{
+            $result['excursions'] = $excursionRepository->findAll();
+        }
+        return new Response(json_encode($result));
+
+        if ($request->isXMLHttpRequest()) {
+            return new JsonResponse(array('data' => 'this is a json response'));
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
+//    public function searchActionFront()
+//    {
+//        dd("d");
+//        $em = $this->getDoctrine()->getManager();
+//        $repository=$this->getDoctrine()->getRepository(Excursion::class);
+//        $libelle = $request->get('q');
+//        if($libelle){
+//            $excursion =$em->getRepository(Excursion::class)->findEntitiesByLibelle($libelle);
+//            if(!$excursion ) {
+//                $result['excursion']['error'] = "Excursion introuvable !";
+//            } else {
+//                $result['excursion'] = $this->getRealEntities($excursion);
+//            }
+//        }else{
+//            $result['excursion'] = $this->getRealEntities($repository->findAll());
+//        }
+//        return new Response(json_encode($result));
+//    }
 
 //    public function __construct(
 //        CsrfTokenManagerInterface $tokenManager

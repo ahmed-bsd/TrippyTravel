@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="521eb123-88ad-4c23-9d12-f0a9740c2a20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionchartjsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionchartjsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/excursionchartjs/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursionchartjs/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/ExcursionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ExcursionRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/excursion/front_index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/excursion/front_index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +221,8 @@
       <updated>1646383353244</updated>
       <workItem from="1646383354666" duration="5038000" />
       <workItem from="1646757796526" duration="24237000" />
-      <workItem from="1646788432332" duration="7179000" />
+      <workItem from="1646788432332" duration="7368000" />
+      <workItem from="1646865172512" duration="7421000" />
     </task>
     <servers />
   </component>
