@@ -33,12 +33,11 @@
                                 <div class="form-group">
                                     <div class="select-wrap one-third">
                                         <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="" id="" class="form-control" placeholder="Keyword search">
-                                            <option value="">Select Location</option>
-                                            <option value="">San Francisco USA</option>
-                                            <option value="">Berlin Germany</option>
-                                            <option value="">Lodon United Kingdom</option>
-                                            <option value="">Paris Italy</option>
+                                        <select name="" id="dynamic_select" class="form-control" placeholder="Keyword search">
+                                            <option value="">Select Ville</option>
+                                            {% for ville in villes %}
+                                                <option value="{{ ville }}" >{{ ville }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>

@@ -44,35 +44,13 @@ class ExcursionController extends AbstractController
     }
 
     /**
-     * @Route("admin-dashboard/excursion/", name="excursion_index", methods={"GET","POST"})
+     * @Route("admin-dashboard/excursion/", name="excursion_index", methods={"GET"})
      */
     public function index(Request $request, ExcursionRepository $excursionRepository, ToastrFactory $flasher): Response
     {
         $excursions = $excursionRepository->findAll();
-        $form = $this->createFormBuilder(null)
-            ->add('query', TextType::class, [
-                'required' => false,
-                'label' => false
-            ])
-            ->add('chercher', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ])
-            ->getForm();
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $re = $request->get('form');
-            $excursions = $excursionRepository->createQueryBuilder('e')
-                ->where('e.libelle LIKE :lib')
-                ->setParameter('lib', '%' . $re['query'] . '%')
-                ->getQuery()
-                ->getResult();
-        }
         return $this->render('excursion/index.html.twig', [
             'excursions' => $excursions,
-            'form' => $form->createView(),
         ]);
     }
 
@@ -167,13 +145,19 @@ class ExcursionController extends AbstractController
      */
     public function index_front(ExcursionRepository $excursionRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $all = $excursionRepository->findAll();
+        $ville = [];
+        foreach ($all as $one){
+            $ville[] = $one->getVille();
+        }
         $excursions = $paginator->paginate(
-            $excursionRepository->findAll(), // Requête contenant les données à paginer (ici nos articles)
+            $all,
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            10 // Nombre de résultats par page
+            2 // Nombre de résultats par page
         );
         return $this->render('excursion/front_index.html.twig', [
             'excursions' => $excursions,
+            'villes' => $ville
         ]);
     }
 
@@ -294,29 +278,24 @@ class ExcursionController extends AbstractController
 
         return new Response('This is not ajax!', 400);
     }
-//    public function searchActionFront()
-//    {
-//        dd("d");
-//        $em = $this->getDoctrine()->getManager();
-//        $repository=$this->getDoctrine()->getRepository(Excursion::class);
-//        $libelle = $request->get('q');
-//        if($libelle){
-//            $excursion =$em->getRepository(Excursion::class)->findEntitiesByLibelle($libelle);
-//            if(!$excursion ) {
-//                $result['excursion']['error'] = "Excursion introuvable !";
-//            } else {
-//                $result['excursion'] = $this->getRealEntities($excursion);
-//            }
-//        }else{
-//            $result['excursion'] = $this->getRealEntities($repository->findAll());
-//        }
-//        return new Response(json_encode($result));
-//    }
 
-//    public function __construct(
-//        CsrfTokenManagerInterface $tokenManager
-//    ) {
-//        $this->tokenManager = $tokenManager;
-//    }
-
+    /**
+     * @Route("/dynamic_select_ville_excursion", name="dynamic_select_ville_excursion", methods={"POST"})
+     */
+    public function dynamic_select_ville_excursion(ExcursionRepository $excursionRepository, Request $request, PaginatorInterface $paginator): Response
+    {
+        $result = [];
+        $ville = $request->get('ville');
+        if ($ville){
+            $excursions = $excursionRepository->findBy(["ville" => $ville]);;
+            if (!$excursions) {
+                $result['excursions']['error'] = "Excursion Pas trouvé :( ";
+            } else {
+                $result['excursions'] = $this->getRealEntities($excursions,"");
+            }
+        }else{
+            $result['excursions'] = $this->getRealEntities($excursionRepository->findAll());
+        }
+        return new Response(json_encode($result));
+    }
 }
