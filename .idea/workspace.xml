@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="521eb123-88ad-4c23-9d12-f0a9740c2a20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Paiement.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/public/Paiement.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Reservation.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/public/Reservation.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExcursionreservationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +223,7 @@
       <workItem from="1646885483929" duration="789000" />
       <workItem from="1646888216117" duration="11844000" />
       <workItem from="1646919168564" duration="334000" />
-      <workItem from="1646922435577" duration="2799000" />
+      <workItem from="1646922435577" duration="3069000" />
     </task>
     <servers />
   </component>

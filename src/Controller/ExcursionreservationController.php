@@ -232,8 +232,16 @@ class ExcursionreservationController extends AbstractController
      */
     public function reservation_index_client(ExcursionreservationRepository $excursionreservationRepository): Response
     {
+        $reservation=[];
+        $user = $this->getUser();
+        if ($user){
+            $reservation = $user->getExcursionreservations();
+            return $this->render('excursionreservation/client_reservation.html.twig', [
+                'client_reservations' => $reservation,
+            ]);
+        }
         return $this->render('excursionreservation/client_reservation.html.twig', [
-            'client_reservations' => $excursionreservationRepository->findAll(),
+            'client_reservations' => $reservation,
         ]);
     }
 }
