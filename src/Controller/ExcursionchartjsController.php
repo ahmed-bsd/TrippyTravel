@@ -73,6 +73,9 @@ class ExcursionchartjsController extends AbstractController
             ],
         ]);
 //chart categorie
+$categorieLib = [];
+$categorieCount = [];
+$categorieColor = [];
         foreach ($categories as $categorie) {
             $categorieLib[] = $categorie->getLibelle();
             $categorieCount[] = count($categorie->getExcursions());

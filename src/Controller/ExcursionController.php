@@ -237,7 +237,8 @@ class ExcursionController extends AbstractController
                 }
                 return $this->redirectToRoute('app_excursionpaiement', [], Response::HTTP_SEE_OTHER);
             }else{
-                $flasher->addError("Vous devez être connecté");
+                return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+                //$flasher->addError("Vous devez être connecté");
             }
         }
         return $this->render('excursion/show_front.html.twig', [

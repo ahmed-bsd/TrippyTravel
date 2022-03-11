@@ -344,6 +344,7 @@ class User implements UserInterface
             $this->excursionreservations[] = $excursionreservation;
             $excursionreservation->setUser($this);
         }
+    }
     public function getBio(): ?string
     {
         return $this->bio;
@@ -364,6 +365,7 @@ class User implements UserInterface
                 $excursionreservation->setUser(null);
             }
         }
+    }
     public function getTelephone(): ?string
     {
         return $this->telephone;
