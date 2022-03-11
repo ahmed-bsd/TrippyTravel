@@ -47,4 +47,12 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getCountPerCategory(){
+        return ($qb = $this->createQueryBuilder('u'))
+            ->select($qb->expr()->count('u.articles'),'u.id_category')
+            ->groupBy('u.id_category')
+            ->getQuery()->getScalarResult();
+
+    }
 }

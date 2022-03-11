@@ -13,22 +13,22 @@ window.onload = () => {
             if(confirm("do you want really delete the image ?")){
                 // On envoie une requête Ajax vers le href du lien avec la méthode DELETE
                 fetch(this.getAttribute("href"), {
-                    method: "DELETE",
-                    headers: {
+                    "method": "DELETE",
+                    "headers": {
                         "X-Requested-With": "XMLHttpRequest",
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({"_token": this.dataset.token})
+                    "body": JSON.stringify({"_token": this.dataset.token})
                 }).then(
                     // On récupère la réponse en JSON
                     response => response.json()
                 ).then(data => {
                     if(data.success)
-                        this.parentElement.remove()
+                        this.parentElement.remove();
                     else
-                        alert(data.error)
+                        alert(data.error);
                 }).catch(e => alert(e))
             }
-        })
+        });
     }
 }

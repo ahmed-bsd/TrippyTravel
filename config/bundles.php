@@ -18,4 +18,5 @@ return [
     MercurySeries\FlashyBundle\MercurySeriesFlashyBundle::class => ['all' => true],
     Flasher\Symfony\FlasherSymfonyBundle::class => ['all' => true],
     Flasher\Notyf\Symfony\FlasherNotyfSymfonyBundle::class => ['all' => true],
+    FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
 ];
