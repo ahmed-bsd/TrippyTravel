@@ -33,7 +33,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
     /**
     * @var Security
     */
-    private $security;
+        private $security;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, Security $security)
     {
@@ -114,7 +114,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             else{
                 return new RedirectResponse($this->urlGenerator->generate('checkmail'));
             }
-
+        
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }

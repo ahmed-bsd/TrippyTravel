@@ -5,6 +5,7 @@
 {% block body %}
 <div class="main-panel">
         <div class="content-wrapper">
+            <div class="container">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -39,7 +40,7 @@
                                     </tr>
                                     <tr>
                                         <th>Description</th>
-                                        <td>{{ reclamation.description }}</td>
+                                        <td><p>{{ reclamation.description }}</p></td>
                                     </tr>
                                     <tr>
                                         <th>Type</th>
@@ -56,6 +57,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 {% endblock %}

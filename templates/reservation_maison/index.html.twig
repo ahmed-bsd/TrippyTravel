@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ReservationMaison index{% endblock %}
+
+{% block body %}
+    <h1>ReservationMaison index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdR</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation_maison in reservation_maisons %}
+            <tr>
+                <td>{{ reservation_maison.id }}</td>
+                <td>{{ reservation_maison.idR }}</td>
+                <td>{{ reservation_maison.prix }}</td>
+                <td>
+                    <a href="{{ path('reservation_maison_show', {'id': reservation_maison.id}) }}">show</a>
+                    <a href="{{ path('reservation_maison_edit', {'id': reservation_maison.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('reservation_maison_new') }}">Create new</a>
+{% endblock %}

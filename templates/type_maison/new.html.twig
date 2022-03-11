@@ -1,0 +1,11 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}New TypeMaison{% endblock %}
+
+{% block body %}
+    <h1>Create new TypeMaison</h1>
+
+    {{ include('type_maison/_form.html.twig') }}
+
+    <a href="http://127.0.0.1:8000/admin-dashboard/type_maisons">back to list</a>
+{% endblock %}
