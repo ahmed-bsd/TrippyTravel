@@ -1,0 +1,13 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}Edit TypeMaison{% endblock %}
+
+{% block body %}
+    <h1>Edit TypeMaison</h1>
+
+    {{ include('type_maison/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('type_maison_index_admin') }}">back to list</a>
+
+    {{ include('type_maison/_delete_form.html.twig') }}
+{% endblock %}

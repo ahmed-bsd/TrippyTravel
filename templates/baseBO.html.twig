@@ -114,9 +114,17 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('admin-dashboard/hotel') }}" class="nav-link" >
+                    <a href="{{ path('hotel_index') }}" class="nav-link" >
                         <i class="menu-icon mdi mdi-floor-plan"></i>
                         <span class="menu-title">Hotels</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="{{ path('chambre_index') }}" class="nav-link" >
+                        <i class="menu-icon mdi mdi-floor-plan"></i>
+                        <span class="menu-title">Chambre hotel</span>
                         <i class="menu-arrow"></i>
                     </a>
                 </li>
@@ -128,11 +136,32 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ path('type_maison_index_admin') }}" class="nav-link" >
+                        <i class="menu-icon mdi mdi-floor-plan"></i>
+                        <span class="menu-title">Type maisons</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('maison_reservation_index') }}" class="nav-link" >
+                        <i class="menu-icon mdi mdi-floor-plan"></i>
+                        <span class="menu-title">Maison Reservation</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ path('admin-dashboard/attraction') }}" class="nav-link" >
                         <i class="menu-icon mdi mdi-floor-plan"></i>
                         <span class="menu-title">Attractions</span>
                         <i class="menu-arrow"></i>
                     </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="{{ path('admin-dashboard/categorie_attraction') }}" class="nav-link" >
+                        <i class="menu-icon mdi mdi-floor-plan"></i>
+                        <span class="menu-title">categorie attraction</span>
+                        <i class="menu-arrow"></i>
+                    </a>                   
                 </li>
                 <li class="nav-item">
                     <a href="{{ path('admin-dashboard/blog') }}" class="nav-link" >
@@ -153,8 +182,13 @@
         {% block body %}
         {% endblock %}
 
-    </div>
-</div>
+							<!-- plugins:js -->
+		<script src="{{ asset('back-office/vendors/js/vendor.bundle.base.js') }}"></script>
+		<!-- endinject -->
+		<!-- Plugin js for this page -->
+		<script src="{{ asset('back-office/vendors/chart.js/Chart.min.js') }}"></script>
+		<script src="{{ asset('back-office/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+		<script src="{{ asset('back-office/vendors/progressbar.js/progressbar.min.js') }}"></script>
 
 <script src="{{ asset('back-office/vendors/js/vendor.bundle.base.js') }}"></script>
 <!-- Plugin js for this page -->
@@ -173,6 +207,7 @@
 <script src="{{ asset('back-office/js/Chart.roundedBarCharts.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('back-office/js/script.js') }}"></script>
+<script src="{{ asset('back-office/js/scriptiheb.js') }}"></script>
 
 
 {{ flasher_render() }}
@@ -181,4 +216,3 @@
 </body>
 
 </html>
-

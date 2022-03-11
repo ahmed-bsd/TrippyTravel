@@ -1,67 +1,132 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
-
-{% block body %}
-<div class="hero-wrap js-fullheight" style="background-image: url('front-office/images/bgg2.jpg');">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-start" data-scrollax-parent="true">
-            <div class="col-md-9 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-<br><br><br><br>
-
-                <form method="post">
-                    {% if error %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('login/css/main.css')}}	">
+<!--===============================================================================================-->
+</head>
+<body>
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" method="post">
+					{% if app.user %}
+					<div class="alert alert-danger" role="alert">
+  						{{ app.user.firstname }} your are not authorized to access this page. you can <a href="{{ path('app_logout') }}">switch</a>account.<a href="{{ path('home') }}" >back to home</a>
+					</div>
+					{% endif %}	
+					{% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
+					<span class="login100-form-title p-b-34">
+						Account Login
+						<br>
+						
 
                     {% if app.user %}
-                        <div class="mb-3">
-                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+					
+                        <div >
+                           <a href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     {% endif %}
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <div class="col-md-6 pr-md-5">
-                        <label for="inputEmail">Email</label>
-                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                        <label for="inputPassword">Password</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                        </div>
-                        <input type="hidden" name="_csrf_token"
+					</span>
+					
+					<div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type user name">
+						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="input100" autocomplete="email" placeholder="Email">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
+						<input class="input100" type="password" name="password" id="inputPassword" autocomplete="current-password" required placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+					<input type="hidden" name="_csrf_token"
                             value="{{ csrf_token('authenticate') }}"
                         >
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Sign in
+						</button>
+					</div>
 
-                            {#
-                                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                                See https://symfony.com/doc/current/security/remember_me.html
+					<div class="w-full text-center p-t-27 p-b-150">
+						<span class="txt1">
+							Forgot
+						</span>
 
-                                <div class="checkbox mb-3">
-                                    <label>
-                                        <input type="checkbox" name="_remember_me"> Remember me
-                                    </label>
-                                </div>
-                            #}
-                            <br>
-                            <div class="row">
-                                
-                                <div class="col-md-4">
-                                <br>
-                                    <span>Not registered ?</span>&nbsp;<a href="{{ path("app_register") }}" class="white"><u>Create an account!</u></a>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-lg btn-primary" type="submit">
-                                        Sign in
-                                    </button>
-                                </div>
-                            </div>
-                            
-                </form>
+						<a href="{{ path("app_forgot_password_request") }}" class="txt2">
+							Password?
+						</a>
+						
+					</div>
+					<div class="w-full text-center  p-b-15">
+                <a href="{{ path('home') }}">
+                    <img src="{{asset('logo.png')}}" alt="logo" width="40" height="40"/>
+                </a>
+				</div>
+					<div class="w-full text-center">
+						<span class="txt1">
+							Create account?
+						</span>
+						<a href="{{ path("app_register") }}" class="txt3">
+							Sign Up
+						</a>
+					</div>
+					
+				</form>
 
-                
-            </div>
-        </div>
-    </div>
-</div>
+				<div class="login100-more" style="background-image: url('logo.png');"></div>
+			</div>
+		</div>
+	</div>
+	
+	
 
-{% endblock %}
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ asset('login/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/select2/select2.min.js')}}"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{ asset('login/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ asset('login/js/main.js')}}"></script>
+
+</body>
+</html>

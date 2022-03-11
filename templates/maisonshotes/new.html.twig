@@ -1,0 +1,20 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}New Maisonshotes{% endblock %}
+
+{% block body %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <h1></h1> <br>
+        <div class="row">
+            <div class="grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"></h4>
+                        <div class="table-responsive">
+    <h1>Create new Maisonshotes</h1>
+
+    {{ include('maisonshotes/_form.html.twig') }}
+
+    <a href="http://127.0.0.1:8000/admin-dashboard/maisonshote">back to list</a>
+{% endblock %}

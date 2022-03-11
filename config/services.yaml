@@ -7,6 +7,9 @@ parameters:
     images_directory: '%kernel.project_dir%/public/uploads'
     app.path.excursion_images: /uploads/images/excursion
     app.path.product_images: /uploads/images/products
+    app.path.maisonhote_images: /uploads/images/maisonhotes
+    app.path.attraction_images: /uploads/images/attraction
+    app.path.hotel_images: /uploads/images/hotel
 
 services:
     # default configuration for services in *this* file

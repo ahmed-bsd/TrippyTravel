@@ -36,9 +36,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email."
-     * )
+     * @Assert\notBlank(message="enter your email")
      * @Groups({"user:read", "user:write"})
      */
     private $email;
@@ -111,6 +109,31 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Excursionreservation::class, mappedBy="user")
      */
     private $excursionreservations;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $bio;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $naissance;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sexe;
     
 
     public function __construct()
@@ -321,6 +344,14 @@ class User implements UserInterface
             $this->excursionreservations[] = $excursionreservation;
             $excursionreservation->setUser($this);
         }
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): self
+    {
+        $this->bio = $bio;
 
         return $this;
     }
@@ -333,6 +364,50 @@ class User implements UserInterface
                 $excursionreservation->setUser(null);
             }
         }
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getNaissance(): ?\DateTimeImmutable
+    {
+        return $this->naissance;
+    }
+
+    public function setNaissance(?\DateTimeImmutable $naissance): self
+    {
+        $this->naissance = $naissance;
+
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(?string $sexe): self
+    {
+        $this->sexe = $sexe;
 
         return $this;
     }

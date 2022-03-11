@@ -9377,6 +9377,7 @@ a img{
   width: 30px;
   height: 30px;
   object-fit: cover;
+  border-radius: 50%;
 }
 #flasher-container-top-right{
   top: 150px!important;

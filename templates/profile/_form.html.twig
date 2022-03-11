@@ -1,6 +1,21 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    
+<div class="row">
+    <div class="form-group col-md-6">{{ form_row(form.firstname, {'attr':{'class':'form-control'}}) }}</div>
+    <div class="form-group col-md-6">{{ form_row(form.lastname, {'attr':{'class':'form-control'}}) }}</div>
+</div> 
+<div class="row">
+    <div class="form-group col-md-12">{{ form_row(form.bio, {'attr':{'class':'form-control'}}) }}</div>
+</div>
+<div class="row">
+    <div class="form-group col-md-4">{{ form_row(form.telephone, {'attr':{'class':'form-control'}}) }}</div>
+    <div class="form-group col-md-4">{{ form_row(form.address, {'attr':{'class':'form-control'}}) }}</div>
+    <div class="form-group col-md-4">{{ form_row(form.sexe, {'attr':{'class':'form-control'}}) }}</div>
+    <div class="form-group col-md-6">{{ form_row(form.naissance) }}</div>
+    <div class="form-group col-md-6">{{ form_row(form.imageFile, {'attr':{'class':'form-control'}}) }}</div>
+</div>
+
+
+
     <div align="right">
     <button class="btn btn-info">{{ button_label|default('Save') }}</button>
     </div>

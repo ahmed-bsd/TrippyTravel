@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+<div class="form-group">
+    <a  id="add_documentation" data-prototype-add="div#appbundle_maisonshotes_maisonhotesimages" class="btn btn-outline-danger btn-icon-text btn-collection-add">
+        <i class="mdi mdi-library-plus"></i>
+        Ajouter image
+    </a>
+</div>
+
+{{ form_row(form.maisonhotesimages) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
