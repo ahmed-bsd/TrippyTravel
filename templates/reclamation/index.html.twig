@@ -1,0 +1,86 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}Reclamations{% endblock %}
+
+{% block body %}
+<div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="card-title">Reclamations</h4>
+                                </div>
+                                <div class="col-md-6 text-right" align="right">
+                                        <a class="btn btn-secondary" href="{{ path('type_rec_index') }}"><i
+                                                    class="mdi mdi-tune"></i></a>
+                                </div>
+                                <p> Liste des reclamations</p>
+                            </div>
+
+                            <div class="table-responsive pt-3">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>sender</th>
+                                            <th>Object</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>CreatedAt</th>
+                                            <th>actions</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for reclamation in reclamations %}
+                                        <tr>
+                                            <td>{{ reclamation.id }}</td>
+                                            <td>
+                                            {% if app.user %}
+                                            {{ reclamation.client }}
+                                            {% endif %}
+                                            </td>
+                                            <td>{{ reclamation.object }}</td>
+                                            <td>{{ reclamation.type }}</td>
+                                            {% if reclamation.status == "done" %}
+                                                <td><FONT COLOR="green"><strong>{{ reclamation.status }}</td>
+                                                {% endif %}
+                                                {% if reclamation.status == "waiting" %}
+                                                <td><FONT COLOR="red"><strong>{{ reclamation.status }}</td>
+                                                {% endif %}
+                                                {% if reclamation.status == "in progress" %}
+                                                <td><FONT COLOR="blue"><strong>{{ reclamation.status }}</td>
+                                                {% endif %}
+                                                {% if reclamation.status == "seen" %}
+                                                <td><strong>{{ reclamation.status }}</td>
+                                            {% endif %}
+                                            <td>{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{ path('reclamation_show', {'id': reclamation.id}) }}"
+                                                       class="btn btn-secondary">
+                                                        <i class="mdi mdi-eye"></i>
+                                                        
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

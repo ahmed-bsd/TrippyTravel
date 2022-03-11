@@ -1,0 +1,34 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}Edit user{% endblock %}
+
+{% block body %}
+ <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="card-title">Profile</h4>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    
+                                </div>
+                            </div>
+
+                            <p class="card-description">
+                                Modifier votre profile
+                            </p>
+
+{{ include('profile/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

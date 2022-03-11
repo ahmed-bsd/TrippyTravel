@@ -24,11 +24,10 @@ class BlogController extends AbstractController
      */
     public function admin_index(): Response
     {
-        $articles=["article 1", "article 2"];
+
         return $this->render('blog/admin_index.html.twig', [
-           'articles'=> $articles
+            'controller_name' => 'BlogController',
         ]);
     }
-
 
 }
