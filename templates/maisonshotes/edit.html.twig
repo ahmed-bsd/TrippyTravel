@@ -1,0 +1,22 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %}Edit Maisonshotes{% endblock %}
+
+{% block body %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <h1>Maisons</h1> <br>
+        <div class="row">
+            <div class="grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"></h4>
+                        <div class="table-responsive">
+    <h1>Edit Maisonshotes</h1>
+
+    {{ include('maisonshotes/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('admin-dashboard/maisonshote') }}"class="btn btn-outline-success">back to list</a>
+
+    {{ include('maisonshotes/_delete_form.html.twig') }}
+{% endblock %}

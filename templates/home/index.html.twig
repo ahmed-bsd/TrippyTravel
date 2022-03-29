@@ -10,6 +10,13 @@
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-start" data-scrollax-parent="true">
             <div class="col-md-9 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
 <br><br><br><br>
+{% if app.user %}
+{% if app.user.verified == false %}
+<div class="alert alert-danger" role="alert">
+  	your account is not verified
+</div>
+{% endif %}
+{% endif %}
                 <div class="block-17 my-4">
                     <form action="" method="post" class="d-block d-flex">
                         <div class="fields d-block d-flex">

@@ -92,11 +92,22 @@ class Excursion
      */
     private $excursionreservations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Excursioncomment::class, mappedBy="excursion")
+     */
+    private $excursioncomments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $localisation;
+
 
     public function __construct()
     {
         $this->excursionimages = new ArrayCollection();
         $this->excursionreservations = new ArrayCollection();
+        $this->excursioncomments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -251,6 +262,48 @@ class Excursion
                 $excursionreservation->setExcursion(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Excursioncomment>
+     */
+    public function getExcursioncomments(): Collection
+    {
+        return $this->excursioncomments;
+    }
+
+    public function addExcursioncomment(Excursioncomment $excursioncomment): self
+    {
+        if (!$this->excursioncomments->contains($excursioncomment)) {
+            $this->excursioncomments[] = $excursioncomment;
+            $excursioncomment->setExcursion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExcursioncomment(Excursioncomment $excursioncomment): self
+    {
+        if ($this->excursioncomments->removeElement($excursioncomment)) {
+            // set the owning side to null (unless already changed)
+            if ($excursioncomment->getExcursion() === $this) {
+                $excursioncomment->setExcursion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): self
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

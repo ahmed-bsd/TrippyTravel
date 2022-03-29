@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamations{% endblock %}
+
+{% block body %}
+<div class="hero-wrap js-fullheight" style="background-image: url('{{asset('front-office/images/bg_2.jpg')}}');">
+    <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
+            <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">{{app.user}}</a></span> </p>
+            <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Reclamtion</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+<section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row d-flex">
+                {% for reclamation in reclamations %}
+                    <div class="col-md-12">
+                        <div class="blog-entry align-self-stretch">
+                            <div class="text p-4 d-block">
+                                <div class="col-md3">
+                                    <h3 class="heading mt-3"><a href="{{ path('reclamation_show_client', {'id': reclamation.id}) }}">{{reclamation.object}}</a></h3>
+                                </div>
+                                
+                                <span class="tag">{{reclamation.type}}</span>
+                                <div>content: <span></span>{{ reclamation.description }}</div>
+
+                                <div class="meta mb-3">
+                                <div><a href="#">{{ reclamation.createdAt ? reclamation.createdAt|date('Y-m-d H:i:s') : '' }}</a></div>
+<br>    
+                                    {% if reclamation.status == "done" %}
+                                    <span>status: </span><div style="color:green">{{reclamation.status}}</div>
+                                    {% endif %}
+                                    {% if reclamation.status == "waiting" %}
+                                    <span>status: </span><div style="color:red">{{reclamation.status}}</div>
+                                    {% endif %}
+                                    {% if reclamation.status == "in progress" %}
+                                    <span>status: </span><div style="color:blue">{{reclamation.status}}</div>
+                                    {% endif %}
+                                    {% if reclamation.status == "seen" %}
+                                    <span>status: </span><div>{{reclamation.status}}</div>
+                                    {% endif %}
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+                  {{ knp_pagination_render(reclamations)}}
+
+    </section>
+    
+</div>  
+
+   
+{% endblock %}

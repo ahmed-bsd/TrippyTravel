@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Excursion;
 use App\Entity\Excursioncategorie;
 use App\Form\ExcursioncategorieType;
 use App\Repository\ExcursioncategorieRepository;
@@ -89,5 +90,18 @@ class ExcursioncategorieController extends AbstractController
         }
 
         return $this->redirectToRoute('excursioncategorie_index', [], Response::HTTP_SEE_OTHER);
+    }
+    public function menuCategories($max = 3)
+    {
+        $excursions = $this->getDoctrine()->getRepository(Excursion::class)->findAll();
+        $categories = $this->getDoctrine()->getRepository(Excursioncategorie::class)->findAll();
+
+        return $this->render(
+            'excursioncategorie/menu_list.html.twig',
+            [
+                'excursions' => $excursions,
+                'categories' => $categories
+            ]
+        );
     }
 }

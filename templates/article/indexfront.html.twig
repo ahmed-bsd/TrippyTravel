@@ -18,31 +18,60 @@
     </div>
 
 
-    <section class="ftco-section bg-light">
+    <section class="ftco-section ftco-degree-bg">
         <div class="container">
-            <div class="row d-flex">
+            <div class="row">
+                <div class="col-lg-3 sidebar">
+                    <div class="sidebar-wrap bg-light ftco-animate">
+                        <h2 style="text-align: center">Find Article</h2>
+                        <div class="fields">
+                        {{ form_start(form) }}
+                            {{ form_row(form.q) }}
+                            </br></br>
+                            <h5>Categories</h5>
+                            {{ form_row(form.categories) }}
+                            <div class="form-group">
+                                <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+                            </div>
+                        {{ form_end(form) }}
+                        </div>
+                </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
                 {% for article in articles %}
-                    <div class="col-md-3 d-flex ftco-animate">
+                    <div class="col-md-4 ftco-animate">
                         <div class="blog-entry align-self-stretch">
-                            <a href="{{ path('article_show_client',{id: article.id}) }}" class="block-20" style="background-image: url('{{ asset('front-office/images/image_1.jpg') }}');">
+                            <div class="single-slider owl-carousel">
+                                {% for image in article.images %}
+                            <a href="{{ path('article_show_client',{id: article.id}) }}" class="block-20" style="background-image: url('{{ asset('/uploads/images/blog/'~image.name) }}');">
                             </a>
+                                {% endfor %}
+                            </div>
+
                             <div class="text p-4 d-block">
 
-                                <span class="tag">{{ article.getIdCategory() }}</span>
-                                <span ><a href="{{ path('article_show_client',{id: article.id}) }}" class="meta-chat"><span class="icon-eye"></span> {{ article.views }}</a></span>
-
+                                    <span class="tag">{{ article.getIdCategory() }}</span>
                                 <h3 class="heading mt-3"><a href="{{ path('article_show_client',{id: article.id}) }}">{{ article.title }}</a></h3>
+
                                 <div class="meta mb-3">
                                     <div><a href="{{ path('article_show_client',{id: article.id}) }}">{{ article.CreatedAt ? article.CreatedAt|date('Y-m-d') : '' }}</a></div>
-                                    <div><a href="{{ path('article_show_client',{id: article.id}) }}">Admin</a></div>
-
-                                    <div><a href="{{ path('article_show_client',{id: article.id}) }}" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                                    <div><a href="{{ path('article_show_client',{id: article.id}) }}">Admin</a></div></br>
+                                    <div><a href="{{ path('article_show_client',{id: article.id}) }}" class="icon-eye"> {{ article.views }}</a></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+        {{ knp_pagination_render(articles) }}
             </div>
         </div>
     </section>

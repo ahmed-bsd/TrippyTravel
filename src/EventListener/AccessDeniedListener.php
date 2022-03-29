@@ -2,6 +2,7 @@
 namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -28,10 +29,11 @@ class AccessDeniedListener implements EventSubscriberInterface
         }
 
         // ... perform some action (e.g. logging)
+        
 
         // optionally set the custom response
+        
         //$event->setResponse(new Response("you are not authorized to access this page !", 403));
-
         // or stop propagation (prevents the next exception listeners from being called)
         //$event->stopPropagation();
     }

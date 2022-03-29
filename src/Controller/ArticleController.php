@@ -4,12 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Articlimages;
+use App\Entity\Category;
+use App\Data\SearchData;
+use App\Form\CommentsType;
+use App\Entity\Comments;
 use App\Form\ArticleType;
+use App\Form\SearchForm;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Flasher\Prime\FlasherInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -21,6 +28,8 @@ use Flasher\Notyf\Prime\NotyfFactory;
  */
 class ArticleController extends AbstractController
 {
+
+
     /**
      * @Route("/admin-dashboard/article/", name="article_index", methods={"GET"})
      */
@@ -150,7 +159,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("admin-dashboard/image/{id}/delete", name="delete_image", methods={"DELETE"})
+     * @Route("admin-dashboard/image/delete/{id}", name="delete_image", methods={"DELETE"})
      */
     public function deleteImage(Articlimages $image, Request $request,NotyfFactory $flasher)
     {
@@ -161,6 +170,7 @@ class ArticleController extends AbstractController
             // On récupère le nom de l'image
             $nom = $image->getName();
             // On supprime le fichier
+            $flasher->addWarning('Image is deleted !');
             unlink($this->getParameter('images_directory').'/'.$nom);
 
             // On supprime l'entrée de la base
@@ -168,7 +178,7 @@ class ArticleController extends AbstractController
             $em->remove($image);
             $em->flush();
 
-            $flasher->addWarning('Image is deleted !');
+
             return new JsonResponse(['success' => 1]);
         }else{
             return new JsonResponse(['error' => 'Token Invalid'], 400);
@@ -179,22 +189,63 @@ class ArticleController extends AbstractController
     /**
      * @Route("/article/", name="article_index_front", methods={"GET"})
      */
-    public function index_front(ArticleRepository $articleRepository): Response
+    public function index_front(ArticleRepository $repository,Request $request): Response
     {
+        $data= new SearchData();
+        $form =$this->createForm(SearchForm::class,$data);
+        $form->handleRequest($request);
+        $articles = $repository->findSearch($data);
         return $this->render('article/indexfront.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            'articles' => $articles,
+            'form'=>$form->createView()
         ]);
     }
     /**
-     * @Route("/article/{id}", name="article_show_client", methods={"GET"})
+     * @Route("/article/{id}", name="article_show_client", methods={"GET","POST"})
      */
-    public function show_client(Article $article, EntityManagerInterface $entityManager): Response
+    public function show_client(Request $request,Article $article, EntityManagerInterface $entityManager,ArticleRepository $articleRepository, CategoryRepository  $rep ,NotyfFactory $flasher): Response
     {
         $article->setViews($article->getViews()+1);
         $entityManager->persist($article);
         $entityManager->flush();
+
+
+        //part of comments
+        $comment = new Comments;  //create a comment
+        $commentForm = $this->createForm(CommentsType::class, $comment);
+        $commentForm->handleRequest($request);
+        //trait the form of comment
+        if($commentForm->isSubmitted() && $commentForm->isValid()){
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setAnnonces($article);
+
+            // parentid feild receive it
+            $parentid = $commentForm->get("parentid")->getData();
+
+            // find the comment
+            $em = $this->getDoctrine()->getManager();
+
+            if($parentid != null){
+                $parent = $em->getRepository(Comments::class)->find($parentid);
+            }
+
+            // the parent comment
+            $comment->setParent($parent ?? null);
+
+            $em->persist($comment);
+            $em->flush();
+            $flasher->addSuccess('Your comment is added successfully ');
+
+            return $this->redirectToRoute('article_show_client',['id'=>$article->getId()], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('article/show_front.html.twig', [
             'article' => $article,
+            'categories' => $rep->findAll(),
+            'commentForm'=>$commentForm->createView()
         ]);
     }
+
+
+
 }

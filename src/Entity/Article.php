@@ -60,11 +60,17 @@ class Article
      */
     private $views;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="annonces", orphanRemoval=true)
+     */
+    private $comments;
+
 
     public function __construct() {
         $this->CreatedAt = new \DateTimeImmutable();
         $this->images = new ArrayCollection();
         $this->views = 0;
+        $this->comments = new ArrayCollection();
 
         }
 
@@ -163,6 +169,36 @@ class Article
     public function setViews(int $views): self
     {
         $this->views = $views;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAnnonces($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAnnonces() === $this) {
+                $comment->setAnnonces(null);
+            }
+        }
 
         return $this;
     }

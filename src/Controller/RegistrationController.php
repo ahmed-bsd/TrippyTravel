@@ -58,6 +58,7 @@ class RegistrationController extends AbstractController
         $email = new TemplatedEmail();
         $email->from('mecherguihamdi45@gmail.com');
         $email->to($user->getEmail());
+        $email->subject('Verfiy email');
         $email->htmlTemplate('registration/confirmation_email.html.twig');
         $email->context(['signedUrl' => $signatureComponents->getSignedUrl()]);
         
